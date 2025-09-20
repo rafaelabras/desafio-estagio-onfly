@@ -1,0 +1,59 @@
+services:
+  postgressql:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    user: "999:999"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresdb:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h 0.0.0.0 -p 5432 -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+  
+  
+  n8n:
+    image: n8nio/n8n:latest
+    restart: always
+    ports:
+      - "5678:5678"
+    user: "1000:1000"
+    environment:
+      - DB_TYPE=postgres
+      - DB_POSTGRES_HOST=postgressql
+      - DB_POSTGRES_PORT=5432
+      - DB_POSTGRES_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRES_USER=${POSTGRES_NON_ROOT_USER}
+      - DB_POSTGRES_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      postgressql:
+        condition: service_healthy
+
+
+
+volumes:
+  postgresdb:
+  n8n_data:
+
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
+
+  
+
+    
