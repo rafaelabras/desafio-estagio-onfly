@@ -1,2 +1,0 @@
-CREATE USER n8n_user WITH PASSWORD 'senha_segura';
-GRANT ALL PRIVILEGES ON DATABASE n8n_db TO n8n_user;

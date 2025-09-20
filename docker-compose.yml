@@ -1,21 +1,22 @@
 services:
-  postgressql:
+  postgres:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    user: "999:999"
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_NON_ROOT_USER=${POSTGRES_NON_ROOT_USER}
+      - POSTGRES_NON_ROOT_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgresdb:/var/lib/postgresql/data
-      - ./init-db:/docker-entrypoint-initdb.d
+      - ./init-db/init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
     networks:
       - app-network
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h 0.0.0.0 -p 5432 -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: 5s
       timeout: 10s
       retries: 5
@@ -28,18 +29,22 @@ services:
     ports:
       - "5678:5678"
     user: "1000:1000"
+    networks:
+      - app-network
     environment:
-      - DB_TYPE=postgres
-      - DB_POSTGRES_HOST=postgressql
-      - DB_POSTGRES_PORT=5432
-      - DB_POSTGRES_DATABASE=${POSTGRES_DB}
-      - DB_POSTGRES_USER=${POSTGRES_NON_ROOT_USER}
-      - DB_POSTGRES_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
-      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
+    links:
+      - postgres
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./.n8n/custom:/home/node/.n8n/custom:ro
     depends_on:
-      postgressql:
+      postgres:
         condition: service_healthy
 
 

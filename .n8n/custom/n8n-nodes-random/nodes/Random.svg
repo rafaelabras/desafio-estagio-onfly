@@ -1,0 +1,47 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dado principal -->
+  <g transform="translate(8, 8)">
+    <!-- Face frontal -->
+    <path d="M0 12 L12 0 L36 0 L24 12 Z" fill="#4285f4" stroke="#2563eb" stroke-width="1.5"/>
+    <!-- Face lateral direita -->
+    <path d="M24 12 L36 0 L36 24 L24 36 Z" fill="#1e40af" stroke="#2563eb" stroke-width="1.5"/>
+    <!-- Face frontal principal -->
+    <path d="M0 12 L24 12 L24 36 L0 36 Z" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+    
+    <!-- Pontos do dado (face frontal) -->
+    <!-- Ponto central -->
+    <circle cx="12" cy="24" r="2.5" fill="white"/>
+    
+    <!-- Pontos diagonais -->
+    <circle cx="6" cy="18" r="1.8" fill="white"/>
+    <circle cx="18" cy="30" r="1.8" fill="white"/>
+    <circle cx="6" cy="30" r="1.8" fill="white"/>
+    <circle cx="18" cy="18" r="1.8" fill="white"/>
+    
+    <!-- Pontos laterais (face direita) -->
+    <circle cx="30" cy="6" r="1.5" fill="white" opacity="0.9"/>
+    <circle cx="30" cy="12" r="1.5" fill="white" opacity="0.9"/>
+    <circle cx="30" cy="18" r="1.5" fill="white" opacity="0.9"/>
+    
+    <!-- Pontos superiores (face superior) -->
+    <circle cx="18" cy="6" r="1.3" fill="white" opacity="0.8"/>
+    <circle cx="24" cy="6" r="1.3" fill="white" opacity="0.8"/>
+  </g>
+  
+  <!-- Efeito de movimento/aleatoriedade -->
+  <g opacity="0.6">
+    <!-- Pequenas partículas/sparkles indicando aleatoriedade -->
+    <circle cx="50" cy="15" r="1.5" fill="#fbbf24">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="55" cy="20" r="1" fill="#f59e0b">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="45" cy="45" r="1.2" fill="#10b981">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="15" cy="50" r="1" fill="#8b5cf6">
+      <animate attributeName="opacity" values="1;0.4;1" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
