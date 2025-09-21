@@ -1,1 +1,469 @@
-# desafio-estagio-onfly
+# n8n Random Number Generator - Custom Node
+
+![n8n Version](https://img.shields.io/badge/n8n-1.111.1-blue)
+![Node.js](https://img.shields.io/badge/node.js-22-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+Um custom node profissional para n8n que gera números verdadeiramente aleatórios utilizando a API do Random.org. Desenvolvido seguindo as melhores práticas da documentação oficial do n8n com arquitetura programática completa.
+
+## 🎯 Sobre o Projeto
+
+Este projeto implementa um conector personalizado que estende as capacidades do n8n, permitindo a geração de números verdadeiramente aleatórios (não pseudo-aleatórios) através da integração com a API pública do Random.org.
+
+### Características Principais:
+
+- ✅ **Integração Real**: Utiliza API externa do Random.org
+- ✅ **Configurável**: Parâmetros Min/Max personalizáveis
+- ✅ **Profissional**: Interface limpa com operação única
+- ✅ **Robusto**: Tratamento completo de erros
+- ✅ **Visual**: Ícone SVG personalizado (dado isométrico animado)
+- ✅ **Infraestrutura**: Docker Compose + PostgreSQL
+- ✅ **Documentado**: README completo e código comentado
+
+## 🛠️ Stack Tecnológica
+
+| Tecnologia | Versão | Propósito |
+|------------|--------|-----------|
+| **Node.js** | 22 (LTS) | Runtime JavaScript |
+| **TypeScript** | 5.2+ | Desenvolvimento type-safe |
+| **n8n** | 1.111.1 | Plataforma de automação |
+| **PostgreSQL** | 15 | Banco de dados |
+| **Docker** | Latest | Containerização |
+| **Docker Compose** | v3.8 | Orquestração |
+
+## 📁 Arquitetura do Projeto
+
+```
+n8n-random-project/
+├── 📄 package.json                    # Configuração do projeto
+├── 📄 docker-compose.yml              # Orquestração Docker
+├── 📄 .env                            # Variáveis de ambiente
+├── 📄 .env.example                    # Template de configuração
+├── 📄 .gitignore                      # Arquivos ignorados
+├── 📄 README.md                       # Esta documentação
+├── 📁 init-db/                        # Scripts de inicialização
+│   └── 📄 init-data.sh                # Setup usuário PostgreSQL
+└── 📁 .n8n/                          # Configurações n8n
+    └── 📁 custom/                     # Custom nodes
+        └── 📁 n8n-nodes-random/       # Nosso custom node
+            ├── 📄 package.json        # Config do node
+            ├── 📄 tsconfig.json       # Config TypeScript
+            ├── 📁 nodes/              # Código fonte
+            │   ├── 📄 Random.node.ts  # Implementação principal
+            │   └── 🎨 Random.svg      # Ícone do node
+            └── 📁 dist/               # Código compilado
+                └── 📁 nodes/          # JS + assets
+                    ├── 📄 Random.node.js
+                    └── 🎨 Random.svg
+```
+
+## 🚀 Início Rápido (Quick Start)
+
+## 🚀 Instalação e Configuração Detalhada
+
+### Pré-requisitos Verificados
+```bash
+node --version    # Deve ser v22.x.x
+docker --version  # Qualquer versão recente
+git --version     # Para clonagem
+```
+
+### Instalação Express (5 minutos)
+
+```bash
+# 1. Clone e acesse
+git clone https://github.com/rafaelabras/desafio-estagio-onfly.git
+cd desafio-estagio-onfly
+
+# 2. Configure ambiente
+cp .env.example .env
+# Edite o .env com suas preferências
+
+# 3. Instale e build
+npm install
+cd .n8n/custom/n8n-nodes-random
+npm install && npm audit fix --force
+npm run build
+cd ../../..
+
+# 4. Execute
+npm run dev
+```
+
+### Verificação Rápida
+1. Acesse: http://localhost:5678
+2. Configure conta admin
+3. Procure "Random" na categoria "Transform"
+4. Teste com Min: 1, Max: 100
+
+**Pronto!** Seu ambiente está funcional.
+
+### Pré-requisitos
+
+- **Node.js 22** (LTS)
+- **Docker** e **Docker Compose**
+- **Git** para clonagem do repositório
+
+### 1. Clone o Repositório
+
+```bash
+git clone https://github.com/seu-usuario/n8n-random-project.git
+cd n8n-random-project
+```
+
+### 2. Configure o Ambiente
+
+```bash
+# Copie o arquivo de exemplo
+cp .env.example .env
+
+# Edite as variáveis (use um editor de texto)
+nano .env
+```
+
+Configuração do `.env`:
+```env
+# Configurações PostgreSQL
+POSTGRES_DB=n8n_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=sua_senha_segura_123
+POSTGRES_NON_ROOT_USER=n8n_user
+POSTGRES_NON_ROOT_PASSWORD=n8n_senha_123
+
+# Configurações n8n
+N8N_ENCRYPTION_KEY=sua_chave_encriptacao_minimo_10_chars
+```
+
+**Dica de Segurança**: Gere uma chave de encriptação forte:
+```bash
+openssl rand -base64 32
+```
+
+### 3. Instale as Dependências
+
+```bash
+# Dependências do projeto principal
+npm install
+
+# Dependências do custom node
+cd .n8n/custom/n8n-nodes-random
+npm install
+
+# Aplicar correções de segurança (recomendado)
+npm audit fix --force
+cd ../../..
+```
+
+### 4. Build do Custom Node
+
+```bash
+npm run build-node
+```
+
+### 5. Execute o Ambiente
+
+```bash
+# Desenvolvimento (com logs detalhados)
+npm run dev
+
+# Ou produção
+npm start
+```
+
+### 6. Primeiro Acesso
+
+1. Acesse: **http://localhost:5678**
+2. Configure sua conta de administrador
+3. O custom node "Random" estará disponível na categoria **"Transform"**
+
+## 🎲 Utilizando o Custom Node
+
+### Interface do Node
+
+O custom node apresenta uma interface limpa e intuitiva:
+
+1. **Operation**: "True Random Number Generator" (única opção)
+2. **Min**: Valor mínimo (inclusivo) - padrão: 1
+3. **Max**: Valor máximo (inclusivo) - padrão: 60
+
+### Exemplo de Workflow
+
+1. **Adicione um trigger** (Manual Trigger, Webhook, etc.)
+2. **Arraste o node "Random"** para o canvas
+3. **Configure os parâmetros**:
+   - Min: `1`
+   - Max: `100`
+4. **Execute o workflow**
+
+### Saída Esperada
+
+```json
+{
+  "randomNumber": 42,
+  "min": 1,
+  "max": 100
+}
+```
+
+### Integração com Random.org
+
+O node utiliza o endpoint público:
+```
+https://www.random.org/integers/?num=1&min={MIN}&max={MAX}&col=1&base=10&format=plain&rnd=new
+```
+
+**Características da API:**
+- ✅ Números verdadeiramente aleatórios
+- ✅ Baseada em ruído atmosférico
+- ✅ Rate limit: 1000 requests/dia por IP
+- ✅ Sem autenticação necessária
+
+## 🧪 Comandos Disponíveis
+
+```bash
+# Desenvolvimento
+npm run dev                 # Inicia ambiente completo
+npm run build-node         # Recompila apenas o custom node
+npm start                  # Modo produção
+npm stop                   # Para os containers
+npm run clean              # Remove volumes e dados
+
+# Debugging
+docker-compose logs n8n    # Logs do n8n
+docker-compose logs postgres # Logs do PostgreSQL
+docker-compose ps          # Status dos containers
+```
+
+## 🔧 Desenvolvimento e Customização
+
+### Estrutura do Custom Node
+
+O custom node utiliza scripts cross-platform para garantir compatibilidade entre sistemas operacionais:
+
+```json
+{
+  "scripts": {
+    "build": "tsc && npm run copy-icons",
+    "copy-icons": "cpy 'nodes/*.svg' dist/nodes",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "cpy-cli": "^6.0.0",
+    "rimraf": "^6.0.1"
+  }
+}
+```
+
+**Ferramentas cross-platform utilizadas:**
+- `cpy-cli`: Copia arquivos SVG de forma compatível com Windows/Linux/Mac
+- `rimraf`: Remove diretórios de forma cross-platform
+- `tsc`: Compilador TypeScript nativo
+
+```typescript
+export class Random implements INodeType {
+    description: INodeTypeDescription = {
+        displayName: 'Random',
+        name: 'random',
+        icon: 'file:Random.svg',
+        group: ['transform'],
+        version: 1,
+        // ... configurações
+    };
+
+    async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+        // Lógica de execução
+    }
+}
+```
+
+### Modificações Comuns
+
+**Alterar range padrão:**
+```typescript
+default: 1,    // Valor mínimo padrão
+default: 100,  // Valor máximo padrão
+```
+
+**Adicionar validação:**
+```typescript
+if (min >= max) {
+    throw new Error('Min deve ser menor que Max');
+}
+```
+
+**Hot Reload:**
+```bash
+# Após modificações no código
+npm run build-node
+docker-compose restart n8n
+```
+
+## 📊 Monitoramento e Logs
+
+### Logs Importantes
+
+```bash
+# Verificar carregamento do custom node
+docker-compose logs n8n | grep -i custom
+
+# Verificar erros específicos
+docker-compose logs n8n | grep -i error
+
+# Monitoramento em tempo real
+docker-compose logs -f n8n
+```
+
+### Health Checks
+
+O ambiente possui health checks automáticos:
+
+- **PostgreSQL**: Verificação a cada 5s
+- **n8n**: Dependente do PostgreSQL healthy
+
+### Métricas
+
+```bash
+# Uso de recursos
+docker stats
+
+# Verificar conectividade do banco
+docker-compose exec postgres psql -U n8n_user -d n8n_db -c "SELECT version();"
+
+# Teste da API Random.org
+curl "https://www.random.org/integers/?num=1&min=1&max=100&col=1&base=10&format=plain&rnd=new"
+```
+
+## 🛡️ Segurança e Boas Práticas
+
+### Segurança Implementada
+
+- ✅ **Credenciais**: Não commitadas no repositório
+- ✅ **Usuário BD**: Usuário específico com permissões limitadas
+- ✅ **Networks**: Comunicação isolada entre containers
+- ✅ **Validação**: Input sanitization nos parâmetros
+- ✅ **Errors**: Tratamento seguro de erros
+
+### Gerenciamento de Vulnerabilidades
+
+Durante o desenvolvimento, foi identificado um advisory crítico relacionado ao pacote `form-data` através do comando `npm audit`. Para corrigir as vulnerabilidades de segurança:
+
+```bash
+npm audit fix --force
+```
+
+Esta correção aplicou um downgrade do `n8n-workflow` para a versão 1.17.0. **O custom node foi testado após esta alteração e continuou funcionando normalmente**, demonstrando compatibilidade com versões anteriores da API do n8n.
+
+**Justificativa**: Optou-se por aplicar a correção de segurança após validação em ambiente de teste, garantindo tanto a segurança quanto a estabilidade da aplicação.
+
+### Configurações de Produção
+
+Para ambiente produtivo, considere:
+
+```yaml
+# docker-compose.prod.yml
+services:
+  n8n:
+    environment:
+      - N8N_PROTOCOL=https
+      - N8N_HOST=seu-dominio.com
+      - WEBHOOK_URL=https://seu-dominio.com/
+```
+
+### Backup e Restore
+
+```bash
+# Backup do banco
+docker-compose exec postgres pg_dump -U n8n_user n8n_db > backup.sql
+
+# Restore
+docker-compose exec -T postgres psql -U n8n_user n8n_db < backup.sql
+```
+
+## 🐛 Troubleshooting
+
+### Problemas Comuns
+
+| Problema | Sintoma | Solução |
+|----------|---------|---------|
+| **Node não aparece** | Não encontrado na busca | `npm run build-node && docker-compose restart n8n` |
+| **Erro de conexão DB** | `password authentication failed` | Verificar `.env` e executar `init-data.sh` |
+| **API Random.org** | `request failed` | Verificar conectividade e rate limit |
+| **Build falha** | Erros TypeScript | Verificar versões das dependências |
+
+### Logs de Debug
+
+```bash
+# Mode debug completo
+docker-compose down
+docker-compose -f docker-compose.yml -f docker-compose.debug.yml up
+```
+
+### Reset Completo
+
+```bash
+# Limpar tudo e recomeçar
+docker-compose down -v
+docker system prune -f
+rm -rf .n8n/config
+npm run build-node
+docker-compose up
+```
+
+## 📈 Próximas Melhorias
+
+- [ ] **Cache inteligente** para otimizar requests
+- [ ] **Suporte a múltiplos números** por execução
+- [ ] **Validação de rate limits** da API
+- [ ] **Modo offline** com fallback para Math.random()
+- [ ] **Testes automatizados** (Jest + n8n testing)
+- [ ] **CI/CD pipeline** com GitHub Actions
+- [ ] **Métricas** de uso e performance
+- [ ] **Configuração** de timeout personalizável
+
+## 🤝 Contribuição
+
+1. **Fork** o repositório
+2. **Crie** uma feature branch: `git checkout -b feature/nova-funcionalidade`
+3. **Commit** suas mudanças: `git commit -m 'feat: adiciona nova funcionalidade'`
+4. **Push** para a branch: `git push origin feature/nova-funcionalidade`
+5. **Abra** um Pull Request
+
+### Padrões de Commit
+
+Utilizamos [Conventional Commits](https://conventionalcommits.org/):
+
+```
+feat: nova funcionalidade
+fix: correção de bug
+docs: atualização de documentação
+style: formatação de código
+refactor: refatoração
+test: adição de testes
+chore: configurações e build
+```
+
+## 📝 Licença
+
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## 👥 Créditos
+
+**Desenvolvido por:** Rafael Abras  
+**Tecnologias:** n8n, Node.js, TypeScript, Docker, PostgreSQL  
+**API:** Random.org para geração de números aleatórios
+
+---
+
+## 📞 Suporte
+
+Para dúvidas, sugestões ou problemas:
+
+- **Issues**: [GitHub Issues](https://github.com/rafaelabras/desafio-estagio-onfly/issues)
+- **Email**: [seu.email@exemplo.com](mailto:seu.email@exemplo.com)
+- **Documentação n8n**: [docs.n8n.io](https://docs.n8n.io)
+
+---
+
+⭐ **Se este projeto foi útil, considere dar uma estrela no repositório!**
