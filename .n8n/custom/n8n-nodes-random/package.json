@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seu-usuario/n8n-random-project.git"
+    "url": "git+https://github.com/rafaelabras/desafio-estagio-onfly"
   },
   "main": "dist/nodes/Random.node.js",
   "scripts": {
@@ -40,6 +40,6 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/seu-usuario/n8n-random-project/issues"
+    "url": "https://github.com/rafaelabras/desafio-estagio-onfly/issues"
   }
 }

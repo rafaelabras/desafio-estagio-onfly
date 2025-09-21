@@ -10,6 +10,7 @@ services:
       - POSTGRES_NON_ROOT_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
     ports:
       - "5432:5432"
+    user: "999:999"
     volumes:
       - postgresdb:/var/lib/postgresql/data
       - ./init-db/init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
