@@ -1,13 +1,17 @@
 # n8n Random Number Generator - Custom Node
 
+### Teste Técnico para Onfly
+
 ![n8n Version](https://img.shields.io/badge/n8n-1.111.1-blue)
 ![Node.js](https://img.shields.io/badge/node.js-22-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+![Descrição da imagem](docs/images/custom_node.JPG)
+
 Um custom node profissional para n8n que gera números verdadeiramente aleatórios utilizando a API do Random.org. Desenvolvido seguindo as melhores práticas da documentação oficial do n8n com arquitetura programática completa.
 
-## 🎯 Sobre o Projeto
+## Sobre o Projeto
 
 Este projeto implementa um conector personalizado que estende as capacidades do n8n, permitindo a geração de números verdadeiramente aleatórios (não pseudo-aleatórios) através da integração com a API pública do Random.org.
 
@@ -21,14 +25,14 @@ Este projeto implementa um conector personalizado que estende as capacidades do 
 - ✅ **Infraestrutura**: Docker Compose + PostgreSQL
 - ✅ **Documentado**: README completo e código comentado
 
-## 🛠️ Stack Tecnológica
+## Stack Tecnológica
 
 | Tecnologia | Versão | Propósito |
 |------------|--------|-----------|
 | **Node.js** | 22 (LTS) | Runtime JavaScript |
 | **TypeScript** | 5.2+ | Desenvolvimento type-safe |
 | **n8n** | 1.111.1 | Plataforma de automação |
-| **PostgreSQL** | 15 | Banco de dados |
+| **PostgreSQL** | Latest | Banco de dados |
 | **Docker** | Latest | Containerização |
 | **Docker Compose** | v3.8 | Orquestração |
 
@@ -42,6 +46,8 @@ n8n-random-project/
 ├── 📄 .env.example                    # Template de configuração
 ├── 📄 .gitignore                      # Arquivos ignorados
 ├── 📄 README.md                       # Esta documentação
+├── 📁 docs/                           # Pasta para documentação
+│   └── 📁 images                      # Para guardar imagens relacionadas a documentação    
 ├── 📁 init-db/                        # Scripts de inicialização
 │   └── 📄 init-data.sh                # Setup usuário PostgreSQL
 └── 📁 .n8n/                          # Configurações n8n
@@ -58,9 +64,9 @@ n8n-random-project/
                     └── 🎨 Random.svg
 ```
 
-## 🚀 Início Rápido (Quick Start)
+##  Início Rápido (Quick Start)
 
-## 🚀 Instalação e Configuração Detalhada
+##  Instalação e Configuração Detalhada
 
 ### Pré-requisitos Verificados
 ```bash
@@ -83,7 +89,7 @@ cp .env.example .env
 # 3. Instale e build
 npm install
 cd .n8n/custom/n8n-nodes-random
-npm install && npm audit fix --force
+npm install 
 npm run build
 cd ../../..
 
@@ -95,7 +101,7 @@ npm run dev
 1. Acesse: http://localhost:5678
 2. Configure conta admin
 3. Procure "Random" na categoria "Transform"
-4. Teste com Min: 1, Max: 100
+4. Teste com Min: 1, Max: 60
 
 **Pronto!** Seu ambiente está funcional.
 
@@ -133,11 +139,6 @@ POSTGRES_NON_ROOT_PASSWORD=n8n_senha_123
 
 # Configurações n8n
 N8N_ENCRYPTION_KEY=sua_chave_encriptacao_minimo_10_chars
-```
-
-**Dica de Segurança**: Gere uma chave de encriptação forte:
-```bash
-openssl rand -base64 32
 ```
 
 ### 3. Instale as Dependências
@@ -193,7 +194,7 @@ O custom node apresenta uma interface limpa e intuitiva:
 2. **Arraste o node "Random"** para o canvas
 3. **Configure os parâmetros**:
    - Min: `1`
-   - Max: `100`
+   - Max: `60`
 4. **Execute o workflow**
 
 ### Saída Esperada
@@ -202,7 +203,7 @@ O custom node apresenta uma interface limpa e intuitiva:
 {
   "randomNumber": 42,
   "min": 1,
-  "max": 100
+  "max": 60
 }
 ```
 
@@ -219,7 +220,7 @@ https://www.random.org/integers/?num=1&min={MIN}&max={MAX}&col=1&base=10&format=
 - ✅ Rate limit: 1000 requests/dia por IP
 - ✅ Sem autenticação necessária
 
-## 🧪 Comandos Disponíveis
+##  Comandos Disponíveis
 
 ```bash
 # Desenvolvimento
@@ -276,28 +277,6 @@ export class Random implements INodeType {
         // Lógica de execução
     }
 }
-```
-
-### Modificações Comuns
-
-**Alterar range padrão:**
-```typescript
-default: 1,    // Valor mínimo padrão
-default: 100,  // Valor máximo padrão
-```
-
-**Adicionar validação:**
-```typescript
-if (min >= max) {
-    throw new Error('Min deve ser menor que Max');
-}
-```
-
-**Hot Reload:**
-```bash
-# Após modificações no código
-npm run build-node
-docker-compose restart n8n
 ```
 
 ## 📊 Monitoramento e Logs
@@ -357,30 +336,6 @@ Esta correção aplicou um downgrade do `n8n-workflow` para a versão 1.17.0. **
 
 **Justificativa**: Optou-se por aplicar a correção de segurança após validação em ambiente de teste, garantindo tanto a segurança quanto a estabilidade da aplicação.
 
-### Configurações de Produção
-
-Para ambiente produtivo, considere:
-
-```yaml
-# docker-compose.prod.yml
-services:
-  n8n:
-    environment:
-      - N8N_PROTOCOL=https
-      - N8N_HOST=seu-dominio.com
-      - WEBHOOK_URL=https://seu-dominio.com/
-```
-
-### Backup e Restore
-
-```bash
-# Backup do banco
-docker-compose exec postgres pg_dump -U n8n_user n8n_db > backup.sql
-
-# Restore
-docker-compose exec -T postgres psql -U n8n_user n8n_db < backup.sql
-```
-
 ## 🐛 Troubleshooting
 
 ### Problemas Comuns
@@ -411,25 +366,6 @@ npm run build-node
 docker-compose up
 ```
 
-## 📈 Próximas Melhorias
-
-- [ ] **Cache inteligente** para otimizar requests
-- [ ] **Suporte a múltiplos números** por execução
-- [ ] **Validação de rate limits** da API
-- [ ] **Modo offline** com fallback para Math.random()
-- [ ] **Testes automatizados** (Jest + n8n testing)
-- [ ] **CI/CD pipeline** com GitHub Actions
-- [ ] **Métricas** de uso e performance
-- [ ] **Configuração** de timeout personalizável
-
-## 🤝 Contribuição
-
-1. **Fork** o repositório
-2. **Crie** uma feature branch: `git checkout -b feature/nova-funcionalidade`
-3. **Commit** suas mudanças: `git commit -m 'feat: adiciona nova funcionalidade'`
-4. **Push** para a branch: `git push origin feature/nova-funcionalidade`
-5. **Abra** um Pull Request
-
 ### Padrões de Commit
 
 Utilizamos [Conventional Commits](https://conventionalcommits.org/):
@@ -444,10 +380,6 @@ test: adição de testes
 chore: configurações e build
 ```
 
-## 📝 Licença
-
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
 ## 👥 Créditos
 
 **Desenvolvido por:** Rafael Abras  
@@ -461,9 +393,6 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 Para dúvidas, sugestões ou problemas:
 
 - **Issues**: [GitHub Issues](https://github.com/rafaelabras/desafio-estagio-onfly/issues)
-- **Email**: [seu.email@exemplo.com](mailto:seu.email@exemplo.com)
 - **Documentação n8n**: [docs.n8n.io](https://docs.n8n.io)
 
 ---
-
-⭐ **Se este projeto foi útil, considere dar uma estrela no repositório!**

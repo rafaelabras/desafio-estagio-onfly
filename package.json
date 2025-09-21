@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "docker-compose up",
-    "start": "docker-compose up",
     "stop": "docker-compose down",
     "build": "docker-compose build",
     "clean": "docker-compose down -v",
