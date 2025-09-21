@@ -14,7 +14,7 @@ Este documento detalha o processo completo de desenvolvimento do custom node, in
 - Estilo programático (não declarativo)
 
 **Não Funcionais:**
-- n8n self-hosted local (versão 1.85.4)
+- n8n self-hosted local (versão 1.85.4 latest)
 - Docker Compose + PostgreSQL
 - Node.js 22 + TypeScript
 - Documentação completa
@@ -60,47 +60,7 @@ const response = await this.helpers.request(options);
 
 ## Problemas Enfrentados e Soluções
 
-### 1. Compatibilidade de Versões n8n
-
-**Problema:** NodeConnectionType descontinuado nas versões mais recentes.
-
-**Erro:**
-```
-'NodeConnectionType' only refers to a type, but is being used as a value here.ts(2693)
-```
-
-**Solução:**
-```typescript
-// Antes (não funciona)
-inputs: [NodeConnectionType.Main]
-
-// Depois (funciona)
-inputs: ['main']
-```
-
-### 2. Conflito de Nomes de Nodes
-
-**Problema:** Nome "random" estava causando conflito interno no n8n.
-
-**Logs de Erro:**
-```
-No codex available for: random
-```
-
-**Solução:** Mantido o nome "random" após verificação que o problema era temporário.
-
-### 3. Exports TypeScript Incorretos
-
-**Problema:** Classe não estava sendo exportada corretamente para o n8n.
-
-**Erro:**
-```
-TypeError: require(...).Random is not a constructor
-```
-
-**Solução:** Verificação da estrutura de exports e compilação TypeScript correta.
-
-### 4. Configuração PostgreSQL
+### 1. Configuração Script PostgreSQL
 
 **Problema:** Script de inicialização não executava por formato de arquivo incorreto.
 
@@ -111,10 +71,9 @@ cannot execute: required file not found
 
 **Solução:**
 - Conversão CRLF → LF
-- Permissões de execução (`chmod +x`)
 - Validação de sintaxe bash
 
-### 5. Compatibilidade Cross-Platform
+### 2. Compatibilidade Cross-Platform
 
 **Problema:** Comandos Unix (cp, mkdir) não funcionam no Windows.
 
@@ -130,11 +89,11 @@ cannot execute: required file not found
 }
 ```
 
-### 6. Vulnerabilidades de Segurança
+### 3. Vulnerabilidades de Segurança
 
 **Problema:** Vulnerabilidade crítica no pacote form-data.
 
-**Decisão:** Aplicar `npm audit fix --force` após teste de compatibilidade.
+**Decisão:** Aplicar `npm audit fix --force` após teste de compatibilidade, porém foi realizado de forma segura em um repositório teste.
 
 **Resultado:** Downgrade do n8n-workflow sem quebra de funcionalidade.
 
@@ -188,35 +147,6 @@ try {
 }
 ```
 
-## Aprendizados Técnicos
-
-### 1. Ecosystem n8n
-- Diferença entre estilos declarativo vs programático
-- Importância da estrutura de `INodeTypeDescription`
-- Sistema de helpers (`this.helpers.request`)
-- Gerenciamento de parâmetros (`this.getNodeParameter`)
-
-### 2. TypeScript para Node.js
-- Configuração correta do `tsconfig.json`
-- Compilação para CommonJS
-- Exports corretos para módulos externos
-
-### 3. Docker e Containerização
-- Orquestração com Docker Compose
-- Health checks para dependências
-- Volume mapping para desenvolvimento
-- Networks isoladas para comunicação entre serviços
-
-### 4. PostgreSQL Integration
-- Scripts de inicialização via `/docker-entrypoint-initdb.d/`
-- Criação de usuários com permissões específicas
-- Configuração de autenticação
-
-### 5. Cross-Platform Development
-- Problemas de compatibilidade Windows/Linux
-- Ferramentas agnósticas de sistema operacional
-- Importância de testes em múltiplos ambientes
-
 ## Debugging e Ferramentas
 
 ### Comandos de Debug Utilizados
@@ -237,51 +167,7 @@ docker-compose logs -f
 ### Ferramentas de Desenvolvimento
 - **VS Code**: Editor principal com extensões TypeScript
 - **Docker Desktop**: Gerenciamento de containers
-- **Postman**: Testes da API Random.org
 - **Git**: Controle de versão
-
-## Métricas de Desenvolvimento
-
-**Tempo Total:** ~8 horas de desenvolvimento
-**Linhas de Código:** ~150 linhas (node + configurações)
-**Arquivos Criados:** 8 arquivos principais
-**Problemas Solucionados:** 6 problemas técnicos significativos
-
-## Considerações para Produção
-
-### Melhorias Identificadas
-
-1. **Cache de Requests**: Implementar cache local para reduzir calls para Random.org
-2. **Rate Limiting**: Monitoramento do limite de 1000 requests/dia
-3. **Fallback**: Modo offline com Math.random() se API falhar
-4. **Validação**: Input validation mais robusta (min < max)
-5. **Logging**: Sistema de logs estruturado para auditoria
-6. **Testes**: Suite de testes automatizados
-
-### Arquitetura Escalável
-
-Para um ambiente empresarial, consideraria:
-- Load balancer para múltiplas instâncias n8n
-- Redis para cache distribuído
-- Monitoring com Prometheus/Grafana
-- CI/CD pipeline automatizado
-- Testes de carga e performance
-
-## Reflexões Sobre o Processo
-
-### Pontos Fortes
-- Abordagem sistemática para resolução de problemas
-- Documentação detalhada durante desenvolvimento
-- Testes incrementais de funcionalidade
-- Consideração de compatibilidade multiplataforma
-
-### Áreas de Melhoria
-- Poderia ter começado com environment mais simples (SQLite)
-- Testes automatizados desde o início
-- Versionamento mais granular durante desenvolvimento
-
-### Aprendizado Principal
-O desenvolvimento de custom nodes para n8n exige compreensão tanto da arquitetura interna da plataforma quanto das peculiaridades de integração com APIs externas. A parte mais desafiadora foi navegar entre diferentes versões da API do n8n e garantir compatibilidade.
 
 ---
 
