@@ -63,7 +63,11 @@ n8n-random-project/
                     └── 🎨 Random.svg
 ```
 
-##  Início Rápido (Quick Start)
+## Executar os Testes
+
+Este projeto não possui testes automatizados.  
+O processo de teste consiste em validar manualmente o funcionamento do conector personalizado no ambiente n8n local.
+Para isso, garanta que os seguintes passos sejam realizados de forma correta e sequencial.
 
 ##  Instalação e Configuração Detalhada
 
@@ -84,6 +88,7 @@ cd desafio-estagio-onfly
 # 2. Configure ambiente
 cp .env.example .env
 # Edite o .env com suas preferências
+# Caso o cp não funcione, apenas copie o .env.example e nomeie para apenas .env e configure as ENVs presentes com valores desejados.
 
 # 3. Instale e build
 npm install
