@@ -2,10 +2,6 @@
 
 ### Teste Técnico para Onfly
 
-![n8n Version](https://img.shields.io/badge/n8n-1.111.1-blue)
-![Node.js](https://img.shields.io/badge/node.js-22-green)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue)
-
 ![Descrição da imagem](docs/images/custom_node.JPG)
 
 Um custom node profissional para n8n que gera números verdadeiramente aleatórios utilizando a API do Random.org. Desenvolvido seguindo as melhores práticas da documentação oficial do n8n com arquitetura programática completa.
