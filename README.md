@@ -5,7 +5,6 @@
 ![n8n Version](https://img.shields.io/badge/n8n-1.111.1-blue)
 ![Node.js](https://img.shields.io/badge/node.js-22-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 ![Descrição da imagem](docs/images/custom_node.JPG)
 
@@ -36,7 +35,7 @@ Este projeto implementa um conector personalizado que estende as capacidades do 
 | **Docker** | Latest | Containerização |
 | **Docker Compose** | v3.8 | Orquestração |
 
-## 📁 Arquitetura do Projeto
+## Arquitetura do Projeto
 
 ```
 n8n-random-project/
@@ -100,7 +99,7 @@ npm run dev
 ### Verificação Rápida
 1. Acesse: http://localhost:5678
 2. Configure conta admin
-3. Procure "Random" na categoria "Transform"
+3. Procure pelo node **Random** na lista de nodes (em “Action in an app”)  
 4. Teste com Min: 1, Max: 60
 
 **Pronto!** Seu ambiente está funcional.
@@ -151,7 +150,7 @@ npm install
 cd .n8n/custom/n8n-nodes-random
 npm install
 
-# Aplicar correções de segurança (recomendado)
+# Aplicar correções de segurança (recomendado porém tenha cuidado)
 npm audit fix --force
 cd ../../..
 ```
@@ -176,7 +175,7 @@ npm start
 
 1. Acesse: **http://localhost:5678**
 2. Configure sua conta de administrador
-3. O custom node "Random" estará disponível na categoria **"Transform"**
+3. Procure pelo node **Random** na lista de nodes (em “Action in an app”)  
 
 ## 🎲 Utilizando o Custom Node
 
@@ -336,7 +335,7 @@ Esta correção aplicou um downgrade do `n8n-workflow` para a versão 1.17.0. **
 
 **Justificativa**: Optou-se por aplicar a correção de segurança após validação em ambiente de teste, garantindo tanto a segurança quanto a estabilidade da aplicação.
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Problemas Comuns
 
@@ -380,7 +379,7 @@ test: adição de testes
 chore: configurações e build
 ```
 
-## 👥 Créditos
+## Créditos
 
 **Desenvolvido por:** Rafael Abras  
 **Tecnologias:** n8n, Node.js, TypeScript, Docker, PostgreSQL  
@@ -388,7 +387,7 @@ chore: configurações e build
 
 ---
 
-## 📞 Suporte
+##  Suporte
 
 Para dúvidas, sugestões ou problemas:
 
