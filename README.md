@@ -8,17 +8,70 @@ Um custom node profissional para n8n que gera números verdadeiramente aleatóri
 
 ## Sobre o Projeto
 
-Este projeto implementa um conector personalizado que estende as capacidades do n8n, permitindo a geração de números verdadeiramente aleatórios (não pseudo-aleatórios) através da integração com a API pública do Random.org.
+Este projeto implementa um conector personalizado que estende as capacidades do n8n, permitindo a geração de números aleatórios através da integração com a API pública do Random.org.
+
+### Arquitetura
+O diagrama abaixo ilustra a arquitetura do sistema implementado usando Docker, destacando a interação entre os serviços `Postgres` e `n8n`, bem como a conexão com o ambiente de desenvolvimento (`Dev`). A configuração foi orquestrada via `docker-compose.yml` e utiliza uma rede personalizada chamada `app-network`.
+
+
+![Descrição da imagem](docs/images/diagrama_arquitetura.JPG)
+
+### Componentes e Conexões
+
+1. **Docker Host**:
+   - Representa o ambiente onde os contêineres Docker são executados.
+   - Contém a rede `app-network`, que conecta os serviços internamente.
+
+2. **Rede `app-network`**:
+   - Uma rede do tipo `bridge` criada para facilitar a comunicação entre os contêineres.
+   - Todos os serviços (`Postgres` e `n8n`) estão conectados a essa rede.
+
+3. **Serviço `Postgres`**:
+   - Imagem utilizada: `postgres:latest`.
+   - Executa como usuário `999:999` para gerenciar permissões de arquivos e dados.
+   - Expõe a porta `5432` para comunicação interna via TCP.
+   - Armazena dados persistentes em um volume chamado `postgresdb` (`/var/lib/postgresql/data`).
+   - Inclui um script de inicialização (`init-data.sh`) no diretório `/docker-entrypoint-initdb.d/`.
+   - Possui um health check configurado com o comando `pg_isready` para verificar a disponibilidade do banco de dados a cada 5 segundos, com timeout de 10 segundos, 5 tentativas e um período inicial de 15 segundos.
+
+4. **Serviço `n8n`**:
+   - Imagem utilizada: `n8nio/n8n:latest`.
+   - Executa como usuário `1000:1000` para gerenciar permissões de arquivos e dados.
+   - Conecta-se ao `Postgres` usando o host `postgres` na porta `5432`, configurado via variáveis de ambiente (`DB_TYPE=postgresdb`, `DB_POSTGRESDB_HOST=postgres`, etc.).
+   - Expõe a porta `5678` para acesso externo, mapeada como `5678:5678` no host.
+   - Armazena dados persistentes em um volume chamado `n8n_data` (`/home/node/.n8n`).
+   - Inclui um diretório customizado (`./.n8n/custom`) montado como read-only.
+   - Depende do health check do `Postgres` para iniciar somente após o banco estar saudável.
+
+5. **Ambiente `Dev`**:
+   - Representa o ambiente de desenvolvimento que interage com o sistema.
+   - Acessa a interface do `n8n` via HTTP na porta `5678` do host.
+   - A conexão é facilitada pelo mapeamento de porta `5678:5678`.
+
+6. **Interface `n8n UI`**:
+   - Interface gráfica do `n8n`, acessível pelo ambiente `Dev` após a conexão HTTP na porta `5678`.
+   - Permite a interação com os fluxos de automação configurados no `n8n`.
+
+### Fluxo de Comunicação
+- O `Postgres` fornece um banco de dados relacional acessível via `tcp 5432` para o `n8n`.
+- O `n8n` utiliza o `Postgres` como backend de dados e expõe sua interface via porta `5678`.
+- O ambiente `Dev` se conecta à interface `n8n UI` através do bind de porta `5678:5678`, permitindo o gerenciamento e monitoramento dos workflows.
+
+### Notas Adicionais
+- Os usuários `999:999` (Postgres) e `1000:1000` (n8n) foram configurados para garantir segurança devido ao problema de segurança do compartilhamento do kernel entre o docker e o host. 
+- A rede `app-network` assegura uma comunicação eficiente e isolada entre os serviços.
+
+
 
 ### Características Principais:
 
-- ✅ **Integração Real**: Utiliza API externa do Random.org
-- ✅ **Configurável**: Parâmetros Min/Max personalizáveis
-- ✅ **Profissional**: Interface limpa com operação única
-- ✅ **Robusto**: Tratamento completo de erros
-- ✅ **Visual**: Ícone SVG personalizado (dado isométrico animado)
-- ✅ **Infraestrutura**: Docker Compose + PostgreSQL
-- ✅ **Documentado**: README completo e código comentado
+- **Integração Real**: Utiliza API externa do Random.org
+- **Configurável**: Parâmetros Min/Max personalizáveis
+- **Profissional**: Interface limpa com operação única
+- **Robusto**: Tratamento completo de erros
+- **Visual**: Ícone SVG personalizado (dado isométrico animado)
+- **Infraestrutura**: Docker Compose + PostgreSQL
+- **Documentado**: README completo e código comentado
 
 ## Stack Tecnológica
 
@@ -31,7 +84,7 @@ Este projeto implementa um conector personalizado que estende as capacidades do 
 | **Docker** | Latest | Containerização |
 | **Docker Compose** | v3.8 | Orquestração |
 
-## Arquitetura do Projeto
+## Arquitetura de arquivos do Projeto
 
 ```
 n8n-random-project/
@@ -74,7 +127,7 @@ docker --version  # Qualquer versão recente
 git --version     # Para clonagem
 ```
 
-### Instalação Express (5 minutos)
+### Instalação
 
 ```bash
 # 1. Clone e acesse
@@ -178,7 +231,7 @@ npm start
 2. Configure sua conta de administrador
 3. Procure pelo node **Random** na lista de nodes (em “Action in an app”)  
 
-## 🎲 Utilizando o Custom Node
+## Utilizando o Custom Node
 
 ### Interface do Node
 
@@ -305,23 +358,11 @@ curl "https://www.random.org/integers/?num=1&min=1&max=100&col=1&base=10&format=
 
 ### Segurança Implementada
 
-- ✅ **Credenciais**: Não commitadas no repositório
-- ✅ **Usuário BD**: Usuário específico com permissões limitadas
-- ✅ **Networks**: Comunicação isolada entre containers
-- ✅ **Validação**: Input sanitization nos parâmetros
-- ✅ **Errors**: Tratamento seguro de erros
-
-### Gerenciamento de Vulnerabilidades
-
-Durante o desenvolvimento, foi identificado um advisory crítico relacionado ao pacote `form-data` através do comando `npm audit`. Para corrigir as vulnerabilidades de segurança:
-
-```bash
-npm audit fix --force
-```
-
-Esta correção aplicou um downgrade do `n8n-workflow` para a versão 1.17.0. **O custom node foi testado após esta alteração e continuou funcionando normalmente**, demonstrando compatibilidade com versões anteriores da API do n8n.
-
-**Justificativa**: Optou-se por aplicar a correção de segurança após validação em ambiente de teste, garantindo tanto a segurança quanto a estabilidade da aplicação.
+-  **Credenciais**: Não commitadas no repositório
+-  **Usuário BD**: Usuário específico com permissões limitadas
+-  **Networks**: Comunicação isolada entre containers
+-  **Validação**: Input sanitization nos parâmetros
+-  **Errors**: Tratamento seguro de erros
 
 ## Troubleshooting
 
