@@ -207,19 +207,6 @@ O custom node apresenta uma interface limpa e intuitiva:
 }
 ```
 
-### Integração com Random.org
-
-O node utiliza o endpoint público:
-```
-https://www.random.org/integers/?num=1&min={MIN}&max={MAX}&col=1&base=10&format=plain&rnd=new
-```
-
-**Características da API:**
-- ✅ Números verdadeiramente aleatórios
-- ✅ Baseada em ruído atmosférico
-- ✅ Rate limit: 1000 requests/dia por IP
-- ✅ Sem autenticação necessária
-
 ##  Comandos Disponíveis
 
 ```bash
@@ -236,7 +223,7 @@ docker-compose logs postgres # Logs do PostgreSQL
 docker-compose ps          # Status dos containers
 ```
 
-## 🔧 Desenvolvimento e Customização
+##  Desenvolvimento e Customização
 
 ### Estrutura do Custom Node
 
@@ -279,7 +266,7 @@ export class Random implements INodeType {
 }
 ```
 
-## 📊 Monitoramento e Logs
+##  Monitoramento e Logs
 
 ### Logs Importantes
 
@@ -314,7 +301,7 @@ docker-compose exec postgres psql -U n8n_user -d n8n_db -c "SELECT version();"
 curl "https://www.random.org/integers/?num=1&min=1&max=100&col=1&base=10&format=plain&rnd=new"
 ```
 
-## 🛡️ Segurança e Boas Práticas
+## Segurança e Boas Práticas
 
 ### Segurança Implementada
 
