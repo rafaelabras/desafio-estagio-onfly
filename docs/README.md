@@ -173,4 +173,4 @@ docker-compose logs -f
 
 **Desenvolvido por:** Rafael Abras  
 **Período:** Setembro 2025  
-**Stack:** Node.js 22, TypeScript 5.2, n8n 1.111.1, PostgreSQL 15, Docker
+**Stack:** Node.js 22, TypeScript 5.2, n8n 1.85.4 PostgreSQL 15, Docker
