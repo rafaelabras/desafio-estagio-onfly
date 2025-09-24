@@ -79,7 +79,7 @@ O diagrama abaixo ilustra a arquitetura do sistema implementado usando Docker, d
 |------------|--------|-----------|
 | **Node.js** | 22 (LTS) | Runtime JavaScript |
 | **TypeScript** | 5.2+ | Desenvolvimento type-safe |
-| **n8n** | 1.111.1 | Plataforma de automação |
+| **n8n** | Latest | Plataforma de automação |
 | **PostgreSQL** | Latest | Banco de dados |
 | **Docker** | Latest | Containerização |
 | **Docker Compose** | v3.8 | Orquestração |
@@ -120,7 +120,14 @@ Para isso, garanta que os seguintes passos sejam realizados de forma correta e s
 
 ##  Instalação e Configuração Detalhada
 
-### Pré-requisitos Verificados
+### Pré-requisitos
+
+- **Node.js 22** (LTS)
+- **Docker** e **Docker Compose**
+- **Git** para clonagem do repositório
+
+
+### Verificar pré-requisitos
 ```bash
 node --version    # Deve ser v22.x.x
 docker --version  # Qualquer versão recente
@@ -157,12 +164,6 @@ npm run dev
 4. Teste com Min: 1, Max: 60
 
 **Pronto!** Seu ambiente está funcional.
-
-### Pré-requisitos
-
-- **Node.js 22** (LTS)
-- **Docker** e **Docker Compose**
-- **Git** para clonagem do repositório
 
 ### 1. Clone o Repositório
 
